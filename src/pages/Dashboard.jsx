@@ -1,10 +1,16 @@
-import { Box, Heading, Text, VStack, Tabs, TabList, TabPanels, Tab, TabPanel, Spinner } from "@chakra-ui/react";
+import { Box, Heading, Text, VStack, Tabs, TabList, TabPanels, Tab, TabPanel, Spinner, Button } from "@chakra-ui/react";
 import { useSupabaseAuth } from "../integrations/supabase/auth.jsx";
-import { useUserData } from "../integrations/supabase/index.js";
+import { useUserData, useDeleteUserData } from "../integrations/supabase/index.js";
 
 const Dashboard = () => {
   const { session } = useSupabaseAuth();
   const { data: userData, isLoading: loading } = useUserData(session?.user?.id);
+
+  const deleteUserData = useDeleteUserData();
+
+  const handleDelete = (id) => {
+    deleteUserData.mutate(id);
+  };
 
   // Placeholder data for stats
   const stats = {
@@ -62,6 +68,7 @@ const Dashboard = () => {
                       <Text><strong>ID:</strong> {data.id}</Text>
                       <Text><strong>Created At:</strong> {data.created_at}</Text>
                       <Text><strong>User Data:</strong> {JSON.stringify(data.user_data)}</Text>
+                      <Button colorScheme="red" onClick={() => handleDelete(data.id)}>Delete</Button>
                     </Box>
                   ))}
                 </VStack>
