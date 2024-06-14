@@ -4,7 +4,7 @@ import { useUserData } from "../integrations/supabase/index.js";
 
 const Dashboard = () => {
   const { session } = useSupabaseAuth();
-  const { data: userData, isLoading: loading } = useUserData();
+  const { data: userData, isLoading: loading } = useUserData(session?.user?.id);
 
   // Placeholder data for stats
   const stats = {

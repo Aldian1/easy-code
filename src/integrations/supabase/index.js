@@ -22,7 +22,7 @@ const fromSupabase = async (query) => {
 table: user_data
     id: number
     created_at: string
-    user_data: json
+    user_data: object
     user_id: string
 
 table: tasks
@@ -42,7 +42,7 @@ table: user_files
 table: form_results
     id: number
     created_at: string
-    response: json
+    response: object
 
 table: messages
     id: number
@@ -52,10 +52,9 @@ table: messages
 
 */
 
-// Hooks for user_data table
-export const useUserData = () => useQuery({
-    queryKey: ['user_data'],
-    queryFn: () => fromSupabase(supabase.from('user_data').select('*')),
+export const useUserData = (userId) => useQuery({
+    queryKey: ['user_data', userId],
+    queryFn: () => fromSupabase(supabase.from('user_data').select('*').eq('user_id', userId)),
 });
 
 export const useAddUserData = () => {
@@ -88,10 +87,11 @@ export const useDeleteUserData = () => {
     });
 };
 
-// Hooks for tasks table
-export const useTasks = () => useQuery({
-    queryKey: ['tasks'],
-    queryFn: () => fromSupabase(supabase.from('tasks').select('*')),
+// Repeat similar hooks for other tables (tasks, user_files, form_results, messages)
+
+export const useTasks = (userId) => useQuery({
+    queryKey: ['tasks', userId],
+    queryFn: () => fromSupabase(supabase.from('tasks').select('*').eq('user_id', userId)),
 });
 
 export const useAddTask = () => {
@@ -124,10 +124,9 @@ export const useDeleteTask = () => {
     });
 };
 
-// Hooks for user_files table
-export const useUserFiles = () => useQuery({
-    queryKey: ['user_files'],
-    queryFn: () => fromSupabase(supabase.from('user_files').select('*')),
+export const useUserFiles = (userId) => useQuery({
+    queryKey: ['user_files', userId],
+    queryFn: () => fromSupabase(supabase.from('user_files').select('*').eq('user_id', userId)),
 });
 
 export const useAddUserFile = () => {
@@ -160,7 +159,6 @@ export const useDeleteUserFile = () => {
     });
 };
 
-// Hooks for form_results table
 export const useFormResults = () => useQuery({
     queryKey: ['form_results'],
     queryFn: () => fromSupabase(supabase.from('form_results').select('*')),
@@ -176,27 +174,6 @@ export const useAddFormResult = () => {
     });
 };
 
-export const useUpdateFormResult = () => {
-    const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: (updatedFormResult) => fromSupabase(supabase.from('form_results').update(updatedFormResult).eq('id', updatedFormResult.id)),
-        onSuccess: () => {
-            queryClient.invalidateQueries('form_results');
-        },
-    });
-};
-
-export const useDeleteFormResult = () => {
-    const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: (id) => fromSupabase(supabase.from('form_results').delete().eq('id', id)),
-        onSuccess: () => {
-            queryClient.invalidateQueries('form_results');
-        },
-    });
-};
-
-// Hooks for messages table
 export const useMessages = () => useQuery({
     queryKey: ['messages'],
     queryFn: () => fromSupabase(supabase.from('messages').select('*')),
@@ -206,26 +183,6 @@ export const useAddMessage = () => {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: (newMessage) => fromSupabase(supabase.from('messages').insert([newMessage])),
-        onSuccess: () => {
-            queryClient.invalidateQueries('messages');
-        },
-    });
-};
-
-export const useUpdateMessage = () => {
-    const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: (updatedMessage) => fromSupabase(supabase.from('messages').update(updatedMessage).eq('id', updatedMessage.id)),
-        onSuccess: () => {
-            queryClient.invalidateQueries('messages');
-        },
-    });
-};
-
-export const useDeleteMessage = () => {
-    const queryClient = useQueryClient();
-    return useMutation({
-        mutationFn: (id) => fromSupabase(supabase.from('messages').delete().eq('id', id)),
         onSuccess: () => {
             queryClient.invalidateQueries('messages');
         },
