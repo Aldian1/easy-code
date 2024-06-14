@@ -43,7 +43,6 @@ const Dashboard = () => {
             <Tab>Yearly Plans</Tab>
             <Tab>User Data</Tab>
           </TabList>
-        </Tabs>
         <TabPanels width="80%">
           <TabPanel>
             <Box p={4} shadow="md" borderWidth="1px" borderRadius="md" bg="background.700">
@@ -116,6 +115,7 @@ const Dashboard = () => {
             </Box>
           </TabPanel>
         </TabPanels>
+        </Tabs>
       </Flex>
     </Box>
   );
