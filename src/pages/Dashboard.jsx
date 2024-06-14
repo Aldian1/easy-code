@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Box, Heading, Text, VStack, Tabs, TabList, TabPanels, Tab, TabPanel, Spinner, Button, Input, InputGroup, InputRightElement, Flex } from "@chakra-ui/react";
+import { Box, Heading, Text, VStack, Tabs, TabList, TabPanels, Tab, TabPanel, Spinner, Button, Input, InputGroup, InputRightElement, Flex, HStack, IconButton, Divider } from "@chakra-ui/react";
+import { FaBell, FaSearch, FaSignOutAlt } from "react-icons/fa";
 import { useSupabaseAuth } from "../integrations/supabase/auth.jsx";
 import { useUserData, useDeleteUserData } from "../integrations/supabase/index.js";
 
 const Dashboard = () => {
-  const { session } = useSupabaseAuth();
+  const { session, logout } = useSupabaseAuth();
   const { data: userData, isLoading: loading } = useUserData(session?.user?.id);
 
   const deleteUserData = useDeleteUserData();
@@ -32,10 +33,45 @@ const Dashboard = () => {
   };
 
   return (
-    <Box p={4} bg="background.800" borderRadius="md" shadow="md">
-      <Heading mb={4} color="brand.700">Dashboard</Heading>
-      <Flex>
-        <Tabs orientation="vertical" variant="enclosed" width="100%">
+    <Flex height="100vh" bg="background.900">
+      <Box width="250px" bg="background.800" p={4} color="text.900">
+        <Heading size="lg" mb={6}>DashStack</Heading>
+        <VStack align="start" spacing={4}>
+          <Button variant="ghost" colorScheme="teal" width="100%">Dashboard</Button>
+          <Button variant="ghost" colorScheme="teal" width="100%">Products</Button>
+          <Button variant="ghost" colorScheme="teal" width="100%">Favorites</Button>
+          <Button variant="ghost" colorScheme="teal" width="100%">Inbox</Button>
+          <Button variant="ghost" colorScheme="teal" width="100%">Order Lists</Button>
+          <Button variant="ghost" colorScheme="teal" width="100%">Product Stock</Button>
+          <Divider />
+          <Button variant="ghost" colorScheme="teal" width="100%">Pricing</Button>
+          <Button variant="ghost" colorScheme="teal" width="100%">Calendar</Button>
+          <Button variant="ghost" colorScheme="teal" width="100%">To-Do</Button>
+          <Button variant="ghost" colorScheme="teal" width="100%">Contact</Button>
+          <Button variant="ghost" colorScheme="teal" width="100%">Invoice</Button>
+          <Button variant="ghost" colorScheme="teal" width="100%">UI Elements</Button>
+          <Button variant="ghost" colorScheme="teal" width="100%">Team</Button>
+          <Button variant="ghost" colorScheme="teal" width="100%">Table</Button>
+          <Divider />
+          <Button variant="ghost" colorScheme="teal" width="100%">Settings</Button>
+          <Button variant="ghost" colorScheme="teal" width="100%">Logout</Button>
+        </VStack>
+      </Box>
+      <Box flex="1" p={4} color="text.900">
+        <HStack justifyContent="space-between" mb={4}>
+          <InputGroup width="300px">
+            <Input placeholder="Search..." bg="background.800" color="text.900" />
+            <InputRightElement>
+              <IconButton icon={<FaSearch />} variant="ghost" colorScheme="teal" />
+            </InputRightElement>
+          </InputGroup>
+          <HStack spacing={4}>
+            <IconButton icon={<FaBell />} variant="ghost" colorScheme="teal" />
+            <Text>{session?.user?.email}</Text>
+            <IconButton icon={<FaSignOutAlt />} variant="ghost" colorScheme="teal" onClick={logout} />
+          </HStack>
+        </HStack>
+        <Tabs variant="enclosed" colorScheme="teal">
           <TabList>
             <Tab>Daily Plans</Tab>
             <Tab>Weekly Plans</Tab>
@@ -43,7 +79,7 @@ const Dashboard = () => {
             <Tab>Yearly Plans</Tab>
             <Tab>User Data</Tab>
           </TabList>
-          <TabPanels width="100%">
+          <TabPanels>
             <TabPanel>
               <Box p={4} shadow="md" borderWidth="1px" borderRadius="md" bg="background.700">
                 <Heading size="md" color="brand.700">Daily Plans</Heading>
@@ -116,8 +152,8 @@ const Dashboard = () => {
             </TabPanel>
           </TabPanels>
         </Tabs>
-      </Flex>
-    </Box>
+      </Box>
+    </Flex>
   );
 };
 
