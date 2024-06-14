@@ -1,4 +1,5 @@
-import { Box, Heading, Text, VStack, Tabs, TabList, TabPanels, Tab, TabPanel, Spinner, Button } from "@chakra-ui/react";
+import { useState } from "react";
+import { Box, Heading, Text, VStack, Tabs, TabList, TabPanels, Tab, TabPanel, Spinner, Button, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import { useSupabaseAuth } from "../integrations/supabase/auth.jsx";
 import { useUserData, useDeleteUserData } from "../integrations/supabase/index.js";
 
@@ -20,6 +21,16 @@ const Dashboard = () => {
     yearly: 960,
   };
 
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState("");
+
+  const handleSendMessage = () => {
+    if (newMessage.trim() !== "") {
+      setMessages([...messages, newMessage]);
+      setNewMessage("");
+    }
+  };
+
   return (
     <Box p={4}>
       <Heading mb={4}>Dashboard</Heading>
@@ -36,6 +47,31 @@ const Dashboard = () => {
             <Box p={4} shadow="md" borderWidth="1px">
               <Heading size="md">Daily Plans</Heading>
               <Text mt={2}>You have {stats.daily} tasks today.</Text>
+              <Box mt={4}>
+                <Heading size="sm">Chat</Heading>
+                <Box maxH="200px" overflowY="auto" mt={2} p={2} borderWidth="1px" borderRadius="md">
+                  {messages.map((msg, index) => (
+                    <Text key={index} mt={1}>{msg}</Text>
+                  ))}
+                </Box>
+                <InputGroup mt={2}>
+                  <Input
+                    placeholder="Type a message..."
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    onKeyPress={(e) => {
+                      if (e.key === "Enter") {
+                        handleSendMessage();
+                      }
+                    }}
+                  />
+                  <InputRightElement width="4.5rem">
+                    <Button h="1.75rem" size="sm" onClick={handleSendMessage}>
+                      Send
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+              </Box>
             </Box>
           </TabPanel>
           <TabPanel>
