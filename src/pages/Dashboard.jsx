@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Box, Heading, Text, VStack, Tabs, TabList, TabPanels, Tab, TabPanel, Spinner, Button, Input, InputGroup, InputRightElement, Flex } from "@chakra-ui/react";
+import { Box, Heading, Text, VStack, Tabs, TabList, TabPanels, Tab, TabPanel, Spinner, Button, Input, InputGroup, InputRightElement, Flex, IconButton } from "@chakra-ui/react";
 import { useSupabaseAuth } from "../integrations/supabase/auth.jsx";
 import { useUserData, useDeleteUserData } from "../integrations/supabase/index.js";
+import { SearchIcon, BellIcon } from "@chakra-ui/icons";
 
 const Dashboard = () => {
   const { session } = useSupabaseAuth();
@@ -32,18 +33,18 @@ const Dashboard = () => {
   };
 
   return (
-    <Box p={4} bg="background.800" borderRadius="md" shadow="md">
-      <Heading mb={4} color="brand.700">Dashboard</Heading>
-      <Flex>
-        <Tabs orientation="vertical" variant="enclosed" width="100%">
+    <Flex height="100vh" bg="background.900">
+      <Box width="250px" bg="background.800" p={4}>
+        <Heading size="md" color="brand.700" mb={4}>Dashboard</Heading>
+        <Tabs orientation="vertical" variant="unstyled">
           <TabList>
-            <Tab>Daily Plans</Tab>
-            <Tab>Weekly Plans</Tab>
-            <Tab>Monthly Plans</Tab>
-            <Tab>Yearly Plans</Tab>
-            <Tab>User Data</Tab>
+            <Tab _selected={{ color: "white", bg: "brand.700" }}>Daily Plans</Tab>
+            <Tab _selected={{ color: "white", bg: "brand.700" }}>Weekly Plans</Tab>
+            <Tab _selected={{ color: "white", bg: "brand.700" }}>Monthly Plans</Tab>
+            <Tab _selected={{ color: "white", bg: "brand.700" }}>Yearly Plans</Tab>
+            <Tab _selected={{ color: "white", bg: "brand.700" }}>User Data</Tab>
           </TabList>
-          <TabPanels width="100%">
+          <TabPanels>
             <TabPanel>
               <Box p={4} shadow="md" borderWidth="1px" borderRadius="md" bg="background.700">
                 <Heading size="md" color="brand.700">Daily Plans</Heading>
@@ -116,8 +117,23 @@ const Dashboard = () => {
             </TabPanel>
           </TabPanels>
         </Tabs>
-      </Flex>
-    </Box>
+      </Box>
+      <Box flex="1" p={4}>
+        <Flex justifyContent="space-between" mb={4}>
+          <InputGroup width="300px">
+            <Input placeholder="Search..." bg="background.700" color="text.900" />
+            <InputRightElement>
+              <IconButton aria-label="Search" icon={<SearchIcon />} />
+            </InputRightElement>
+          </InputGroup>
+          <IconButton aria-label="Notifications" icon={<BellIcon />} />
+        </Flex>
+        <Box p={4} shadow="md" borderWidth="1px" borderRadius="md" bg="background.700">
+          <Heading size="md" color="brand.700">Content Area</Heading>
+          <Text mt={2} color="text.800">This is where the main content will be displayed.</Text>
+        </Box>
+      </Box>
+    </Flex>
   );
 };
 
