@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, Heading, Text, VStack, Tabs, TabList, TabPanels, Tab, TabPanel, Spinner, Button, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
+import { Box, Heading, Text, VStack, Tabs, TabList, TabPanels, Tab, TabPanel, Spinner, Button, Input, InputGroup, InputRightElement, Flex } from "@chakra-ui/react";
 import { useSupabaseAuth } from "../integrations/supabase/auth.jsx";
 import { useUserData, useDeleteUserData } from "../integrations/supabase/index.js";
 
@@ -34,15 +34,17 @@ const Dashboard = () => {
   return (
     <Box p={4} bg="background.800" borderRadius="md" shadow="md">
       <Heading mb={4} color="brand.700">Dashboard</Heading>
-      <Tabs variant="enclosed">
-        <TabList>
-          <Tab>Daily Plans</Tab>
-          <Tab>Weekly Plans</Tab>
-          <Tab>Monthly Plans</Tab>
-          <Tab>Yearly Plans</Tab>
-          <Tab>User Data</Tab>
-        </TabList>
-        <TabPanels>
+      <Flex>
+        <Tabs orientation="vertical" variant="enclosed" width="20%">
+          <TabList>
+            <Tab>Daily Plans</Tab>
+            <Tab>Weekly Plans</Tab>
+            <Tab>Monthly Plans</Tab>
+            <Tab>Yearly Plans</Tab>
+            <Tab>User Data</Tab>
+          </TabList>
+        </Tabs>
+        <TabPanels width="80%">
           <TabPanel>
             <Box p={4} shadow="md" borderWidth="1px" borderRadius="md" bg="background.700">
               <Heading size="md" color="brand.700">Daily Plans</Heading>
@@ -114,7 +116,7 @@ const Dashboard = () => {
             </Box>
           </TabPanel>
         </TabPanels>
-      </Tabs>
+      </Flex>
     </Box>
   );
 };
